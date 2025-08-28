@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>USH SAU</title>
+    <title>USH SAU | Luxury Portal</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -15,6 +15,59 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
+
+      <!-- Password Modal -->
+    <div class="password-modal" id="password-modal">
+        <div class="password-container">
+            <div class="password-logo">USH <span>SAU</span></div>
+            <h2 class="password-title">SECURE ACCESS PORTAL</h2>
+            <p class="password-subtitle">Enter the passcode to continue</p>
+            
+            <input type="password" class="password-input" id="password-input" placeholder="Enter access code">
+            <button class="password-submit" id="password-submit">UNLOCK</button>
+            
+            <p class="password-error" id="password-error">Incorrect passcode. Please try again.</p>
+            <p class="password-hint">Hint: A girl with unique teeths</p>
+        </div>
+    </div>
+
+    <!-- Your existing content (initially hidden) -->
+    <div class="hidden-content" id="main-content">
+        <!-- Your original HTML content would go here -->
+        <header class="main-header">
+            <div class="static-heading">USH <span>SAU</span></div>
+            <div class="menu-toggle" id="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav class="nav-menu" id="nav-menu">
+                <a href="#"><i class="fas fa-home"></i> Home</a>
+                <a href="#study-tracker"><i class="fas fa-book"></i> Study Tracker</a>
+                <a href="#resources"><i class="fas fa-link"></i> Resources</a>
+                <a href="#team"><i class="fas fa-users"></i> Team</a>
+                <a href="#"><i class="fas fa-envelope"></i> Contact</a>
+            </nav>
+        </header>
+
+        <!-- Rest of your content -->
+        <div class="luxury-bg"></div>
+        <div class="decorative-elements"></div>
+
+        <header class="hero">
+            <div class="auto-type-container">
+                <div class="auto-type" id="auto-type"></div>
+            </div>
+            <h2 class="subtitle"><span id="typed"></span></h2>
+        </header>
+
+        <!-- ... rest of your HTML content ... -->
+    </div>
+
+
+
+
+
     <!-- Header with static heading -->
     <header class="main-header">
       <div class="static-heading">USH <span>SAU</span></div>
@@ -243,8 +296,7 @@
           
           <div class="team-member">
             <div class="member-avatar">AP</div>
-            <h4 class="member-name">Ahshdhf dhehhdhs
-            </h4>
+            <h4 class="member-name">Abhinav Phogat</h4>
             <p class="member-role">Science Department</p>
             <div class="member-skills">
               <span class="skill-tag">Physics</span>
@@ -301,6 +353,65 @@
 
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
     <script>
+
+
+
+      // Password protection system
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordModal = document.getElementById('password-modal');
+            const mainContent = document.getElementById('main-content');
+            const passwordInput = document.getElementById('password-input');
+            const passwordSubmit = document.getElementById('password-submit');
+            const passwordError = document.getElementById('password-error');
+            
+            // Set your password here
+            const correctPassword = "aradhya";
+            
+            // Check if already authenticated
+            if (sessionStorage.getItem('authenticated') === 'true') {
+                passwordModal.style.display = 'none';
+                mainContent.style.display = 'block';
+                return;
+            }
+            
+            // Password submission handler
+            function checkPassword() {
+                if (passwordInput.value === correctPassword) {
+                    // Correct password
+                    passwordModal.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    sessionStorage.setItem('authenticated', 'true');
+                } else {
+                    // Incorrect password
+                    passwordError.style.display = 'block';
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                    
+                    // Shake animation for error
+                    passwordModal.animate([
+                        { transform: 'translateX(0)' },
+                        { transform: 'translateX(-10px)' },
+                        { transform: 'translateX(10px)' },
+                        { transform: 'translateX(0)' }
+                    ], {
+                        duration: 300,
+                        iterations: 1
+                    });
+                }
+            }
+            
+            // Event listeners
+            passwordSubmit.addEventListener('click', checkPassword);
+            
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkPassword();
+                }
+            });
+        });
+        
+        // Your existing JavaScript would go here
+
       // DOM elements
       const menuToggle = document.getElementById("menu-toggle");
       const navMenu = document.getElementById("nav-menu");
@@ -344,6 +455,7 @@
       const typed = new Typed("#typed", {
         strings: [
           "KUCH BHI LIKH DO YHA PE TOH",
+          "devender bsms student",
         ],
         typeSpeed: 50,
         backSpeed: 30,
@@ -368,5 +480,3 @@
     </script>
   </body>
 </html>
-
-
