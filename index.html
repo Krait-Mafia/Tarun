@@ -65,7 +65,17 @@
     </div>
 
 
-
+      <!-- Welcome Message Modal -->
+<div class="welcome-modal" id="welcome-modal">
+    <div class="welcome-container">
+        <div class="welcome-icon">
+            <i class="fas fa-lock-open"></i>
+        </div>
+        <h2 class="welcome-title" id="welcome-title">ACCESS GRANTED</h2>
+        <p class="welcome-text" id="welcome-text"></p>
+        <button class="welcome-continue" id="welcome-continue">CONTINUE TO PORTAL</button>
+    </div>
+</div>
 
 
     <!-- Header with static heading -->
@@ -290,13 +300,14 @@
               <span class="skill-tag">Analysis</span>
               <span class="skill-tag">Problem Solving</span>
               <span class="skill-tag">Math</span>
+              <img src="deven.gif" width="400" height="250">
             </div>
           </div>
           
           <div class="team-member">
             <div class="member-avatar">AP</div>
-            <h4 class="member-name">Abgufhg hgfch</h4>
-            <p class="member-role">Scivhgcyfgyug</p>
+            <h4 class="member-name">Abhinav Phogat</h4>
+            <p class="member-role">Science Department</p>
             <div class="member-skills">
               <span class="skill-tag">Physics</span>
               <span class="skill-tag">Chemistry</span>
@@ -356,60 +367,86 @@
 
 
       // Password protection system
-        document.addEventListener('DOMContentLoaded', function() {
-            const passwordModal = document.getElementById('password-modal');
-            const mainContent = document.getElementById('main-content');
-            const passwordInput = document.getElementById('password-input');
-            const passwordSubmit = document.getElementById('password-submit');
-            const passwordError = document.getElementById('password-error');
+document.addEventListener('DOMContentLoaded', function() {
+    const passwordModal = document.getElementById('password-modal');
+    const welcomeModal = document.getElementById('welcome-modal');
+    const mainContent = document.getElementById('main-content');
+    const passwordInput = document.getElementById('password-input');
+    const passwordSubmit = document.getElementById('password-submit');
+    const passwordError = document.getElementById('password-error');
+    const welcomeTitle = document.getElementById('welcome-title');
+    const welcomeText = document.getElementById('welcome-text');
+    const welcomeContinue = document.getElementById('welcome-continue');
+    
+    // Set your password here
+    const correctPassword = "aradhya";
+    
+    // Check if already authenticated
+    if (sessionStorage.getItem('authenticated') === 'true') {
+        passwordModal.style.display = 'none';
+        mainContent.style.display = 'block';
+        return;
+    }
+    
+    // Password submission handler
+    function checkPassword() {
+        if (passwordInput.value === correctPassword) {
+            // Correct password - show welcome message
+            passwordModal.style.display = 'none';
             
-            // Set your password here
-            const correctPassword = "aradhya";
+            // Customize welcome message based on password
+            let welcomeTitleText = "ACCESS GRANTED";
+            let welcomeMessage = "Welcome, Valued Member!";
             
-            // Check if already authenticated
-            if (sessionStorage.getItem('authenticated') === 'true') {
-                passwordModal.style.display = 'none';
-                mainContent.style.display = 'block';
-                return;
+            if (passwordInput.value === "stardust") {
+                welcomeTitleText = "WELCOME, ARADHYA JII";
             }
             
-            // Password submission handler
-            function checkPassword() {
-                if (passwordInput.value === correctPassword) {
-                    // Correct password
-                    passwordModal.style.display = 'none';
-                    mainContent.style.display = 'block';
-                    sessionStorage.setItem('authenticated', 'true');
-                } else {
-                    // Incorrect password
-                    passwordError.style.display = 'block';
-                    passwordInput.value = '';
-                    passwordInput.focus();
-                    
-                    // Shake animation for error
-                    passwordModal.animate([
-                        { transform: 'translateX(0)' },
-                        { transform: 'translateX(-10px)' },
-                        { transform: 'translateX(10px)' },
-                        { transform: 'translateX(0)' }
-                    ], {
-                        duration: 300,
-                        iterations: 1
-                    });
-                }
-            }
+            welcomeTitle.textContent = welcomeTitleText;
+            welcomeText.innerHTML = welcomeMessage;
+            welcomeModal.classList.add('active');
             
-            // Event listeners
-            passwordSubmit.addEventListener('click', checkPassword);
+            // Store authentication
+            sessionStorage.setItem('authenticated', 'true');
+        } else {
+            // Incorrect password
+            passwordError.style.display = 'block';
+            passwordInput.value = '';
+            passwordInput.focus();
             
-            passwordInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    checkPassword();
-                }
+            // Shake animation for error
+            passwordModal.animate([
+                { transform: 'translateX(0)' },
+                { transform: 'translateX(-10px)' },
+                { transform: 'translateX(10px)' },
+                { transform: 'translateX(0)' }
+            ], {
+                duration: 300,
+                iterations: 1
             });
-        });
-        
-        // Your existing JavaScript would go here
+        }
+    }
+    
+    // Continue to main content
+    welcomeContinue.addEventListener('click', function() {
+        welcomeModal.classList.remove('active');
+        setTimeout(function() {
+            welcomeModal.style.display = 'none';
+            mainContent.style.display = 'block';
+        }, 500);
+    });
+    
+    // Event listeners
+    passwordSubmit.addEventListener('click', checkPassword);
+    
+    passwordInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            checkPassword();
+        }
+    });
+});
+
+// Your existing JavaScript for the rest of the site would go here
 
       // DOM elements
       const menuToggle = document.getElementById("menu-toggle");
@@ -479,5 +516,3 @@
     </script>
   </body>
 </html>
-
-
