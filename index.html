@@ -368,64 +368,72 @@
 
       // Password protection system
 document.addEventListener('DOMContentLoaded', function() {
-    const passwordModal = document.getElementById('password-modal');
-    const welcomeModal = document.getElementById('welcome-modal');
-    const mainContent = document.getElementById('main-content');
-    const passwordInput = document.getElementById('password-input');
-    const passwordSubmit = document.getElementById('password-submit');
-    const passwordError = document.getElementById('password-error');
-    const welcomeTitle = document.getElementById('welcome-title');
-    const welcomeText = document.getElementById('welcome-text');
-    const welcomeContinue = document.getElementById('welcome-continue');
-    
-    // Set your password here
-    const correctPassword = "aradhya";
-    
-    // Check if already authenticated
-    if (sessionStorage.getItem('authenticated') === 'true') {
-        passwordModal.style.display = 'none';
-        mainContent.style.display = 'block';
-        return;
+  const passwordModal     = document.getElementById('password-modal');
+  const welcomeModal      = document.getElementById('welcome-modal');
+  const mainContent       = document.getElementById('main-content');
+  const passwordInput     = document.getElementById('password-input');
+  const passwordSubmit    = document.getElementById('password-submit');
+  const passwordError     = document.getElementById('password-error');
+  const welcomeTitle      = document.getElementById('welcome-title');
+  const welcomeText       = document.getElementById('welcome-text');
+  const welcomeContinue   = document.getElementById('welcome-continue');
+
+  // 👉 Password → user mapping (add more entries as needed)
+  const USERS = {
+    // password : { name, welcome }
+    "aradhya": { name: "Aradhya", welcome: "Welcome, Aradhya jii" },
+    "bhumika": { name: "Bhumika", welcome: "Welcome, Bhumika jii" },
+    // "devender123": { name: "Devender", welcome: "Welcome, Devender jii" },
+  };
+
+  // already authenticated?
+  const savedUser = sessionStorage.getItem('authUser');
+  if (sessionStorage.getItem('authenticated') === 'true' && savedUser) {
+    passwordModal.style.display = 'none';
+    mainContent.style.display = 'block';
+    return;
+  }
+
+  function checkPassword() {
+    const pwd = (passwordInput.value || '').trim().toLowerCase();
+    const user = USERS[pwd];
+
+    if (user) {
+      // correct password
+      passwordModal.style.display = 'none';
+      welcomeTitle.textContent = "ACCESS GRANTED";
+      welcomeText.textContent  = user.welcome;
+      welcomeModal.classList.add('active');
+
+      sessionStorage.setItem('authenticated', 'true');
+      sessionStorage.setItem('authUser', user.name);
+    } else {
+      // wrong password
+      passwordError.style.display = 'block';
+      passwordInput.value = '';
+      passwordInput.focus();
+      passwordModal.animate([
+        { transform: 'translateX(0)' },
+        { transform: 'translateX(-10px)' },
+        { transform: 'translateX(10px)' },
+        { transform: 'translateX(0)' }
+      ], { duration: 300, iterations: 1 });
     }
-    
-    // Password submission handler
-    function checkPassword() {
-        if (passwordInput.value === correctPassword) {
-            // Correct password - show welcome message
-            passwordModal.style.display = 'none';
-            
-            // Customize welcome message based on password
-            let welcomeTitleText = "ACCESS GRANTED";
-            let welcomeMessage = "Welcome, Aradhya jii";
-            
-            if (passwordInput.value === "stardust") {
-                welcomeTitleText = "WELCOME, ARADHYA JII";
-            }
-            
-            welcomeTitle.textContent = welcomeTitleText;
-            welcomeText.innerHTML = welcomeMessage;
-            welcomeModal.classList.add('active');
-            
-            // Store authentication
-            sessionStorage.setItem('authenticated', 'true');
-        } else {
-            // Incorrect password
-            passwordError.style.display = 'block';
-            passwordInput.value = '';
-            passwordInput.focus();
-            
-            // Shake animation for error
-            passwordModal.animate([
-                { transform: 'translateX(0)' },
-                { transform: 'translateX(-10px)' },
-                { transform: 'translateX(10px)' },
-                { transform: 'translateX(0)' }
-            ], {
-                duration: 300,
-                iterations: 1
-            });
-        }
-    }
+  }
+
+  welcomeContinue.addEventListener('click', function() {
+    welcomeModal.classList.remove('active');
+    setTimeout(function() {
+      welcomeModal.style.display = 'none';
+      mainContent.style.display = 'block';
+    }, 500);
+  });
+
+  passwordSubmit.addEventListener('click', checkPassword);
+  passwordInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') checkPassword();
+  });
+});
     
     // Continue to main content
     welcomeContinue.addEventListener('click', function() {
@@ -444,7 +452,8 @@ document.addEventListener('DOMContentLoaded', function() {
             checkPassword();
         }
     });
-});
+
+    
 
 // Your existing JavaScript for the rest of the site would go here
 
